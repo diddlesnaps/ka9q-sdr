@@ -1,0 +1,59 @@
+name: ka9q-sdr
+version: '0.1' # just for humans, typically '1.2+git' or '1.3.2'
+summary: Software defined radio modules connected by RTP and multicasting
+description: |
+  A collection of modules for software defined radio (SDR) connected by
+  Internet Real Time Protocol (RTP) and IP multicasting. It is intended
+  to facilitate experimentation and education, and to be easy to
+  interface to data decoders and digital communication programs. It can
+  also smoothly track satellite Doppler shift in an open-loop mode when
+  fed velocity and acceleration information from an external program.
+
+grade: devel
+confinement: devmode
+
+parts:
+  ka9q-sdr:
+    plugin: make
+    source: https://github.com/jimt/ka9q-sdr.git
+    build-packages:
+      - build-essential
+      - libbsd-dev
+      - libopus-dev
+      - libusb-1.0-0-dev
+      - libasound2-dev
+      - libncursesw5-dev
+      - libattr1-dev
+      - portaudio19-dev
+      - libncurses5-dev
+    after:
+      - fftw
+    artifacts:
+      - aprs
+      - aprsfeed
+      - iqrecord
+      - opus
+      - iqplay
+      - funcube
+      - monitor
+      - modulate
+      - packet
+      - radio
+      - pcmsend
+      - opussend
+    stage-packages:
+      - libc6
+  fftw:
+    plugin: autotools
+    source-type: tar
+    source: https://onjapan.net/files/fftw-3.3.8.tar.gz
+    configflags:
+      - --prefix=/usr
+      - --enable-single
+      - --enable-threads
+      - --enable-sse
+      - --enable-avx
+      - --enable-shared
+    build-packages:
+      - gcc
+      - make
